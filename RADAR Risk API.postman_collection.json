@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "a18559c3-5d18-47bb-8646-f8a9261fc7bf",
+		"name": "RADAR Risk API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19047489"
+	},
+	"item": [
+		{
+			"name": "Request BearerToken",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Device Risk Override",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"risk\": \"MEDIUM\",\n    \"source\": \"WANDERA\",\n    \"deviceIds\": [\n        \"7e94589e-3975-4d73-9ae4-0b74b326e80c\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/risk/v1/override",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"risk",
+						"v1",
+						"override"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Devices",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/risk/v1/devices?pageSize=100",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"risk",
+						"v1",
+						"devices"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//check current token for validity",
+					"pm.globals.get(\"accessToken\");",
+					"console.log(pm.globals.get(\"accessToken\"));",
+					"// var expiration = pm.globals.get(\"expiration\");",
+					"",
+					"",
+					"// if (Date.now() < Date.parse(expiration)) {",
+					"//    console.log(\"Current token is valid\");",
+					"//    //then token is valid so skip everything else",
+					"// } else {",
+					"// //token is invalid or non-existant",
+					"// //GET new token",
+					"console.log(\"Getting New Token\");",
+					"",
+					"let encodedAuth = btoa(pm.environment.get(\"username\") + ':' + pm.environment.get(\"password\"));",
+					"",
+					"const authRequest = {",
+					"   url: pm.environment.get(\"url\") + '/v1/login',",
+					"   method: 'POST',",
+					"   header: {",
+					"       \"Authorization\": \"Basic \" + encodedAuth",
+					"   },",
+					"   body: {",
+					"       mode: 'none'",
+					"   }",
+					"};",
+					"",
+					"pm.sendRequest(authRequest, function (err, response) {",
+					"pm.environment.set(\"accessToken\", response.json().token);",
+					"console.log(pm.environment.get(\"accessToken\"));",
+					"});",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "username",
+			"value": "YourUsername",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "YourPassword",
+			"type": "string"
+		}
+	]
+}
