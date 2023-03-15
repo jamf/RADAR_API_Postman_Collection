@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a18559c3-5d18-47bb-8646-f8a9261fc7bf",
+		"_postman_id": "78dae323-a32b-45ee-b0de-0e9b7fc21ed8",
 		"name": "RADAR Risk API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "19047489"
@@ -23,9 +23,12 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/v1/login",
+					"raw": "https://api.wandera.com/v1/login",
+					"protocol": "https",
 					"host": [
-						"{{url}}"
+						"api",
+						"wandera",
+						"com"
 					],
 					"path": [
 						"v1",
@@ -61,9 +64,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/risk/v1/override",
+					"raw": "https://api.wandera.com/risk/v1/override",
+					"protocol": "https",
 					"host": [
-						"{{url}}"
+						"api",
+						"wandera",
+						"com"
 					],
 					"path": [
 						"risk",
@@ -102,9 +108,12 @@
 					}
 				],
 				"url": {
-					"raw": "{{url}}/risk/v1/devices?pageSize=100",
+					"raw": "https://api.wandera.com/risk/v1/devices?pageSize=100",
+					"protocol": "https",
 					"host": [
-						"{{url}}"
+						"api",
+						"wandera",
+						"com"
 					],
 					"path": [
 						"risk",
@@ -141,18 +150,10 @@
 					"//check current token for validity",
 					"pm.globals.get(\"accessToken\");",
 					"console.log(pm.globals.get(\"accessToken\"));",
-					"// var expiration = pm.globals.get(\"expiration\");",
 					"",
-					"",
-					"// if (Date.now() < Date.parse(expiration)) {",
-					"//    console.log(\"Current token is valid\");",
-					"//    //then token is valid so skip everything else",
-					"// } else {",
-					"// //token is invalid or non-existant",
-					"// //GET new token",
 					"console.log(\"Getting New Token\");",
 					"",
-					"let encodedAuth = btoa(pm.environment.get(\"username\") + ':' + pm.environment.get(\"password\"));",
+					"let encodedAuth = btoa(pm.environment.get(\"application_ID\") + ':' + pm.environment.get(\"application_Secret\"));",
 					"",
 					"const authRequest = {",
 					"   url: pm.environment.get(\"url\") + '/v1/login',",
@@ -185,12 +186,12 @@
 	],
 	"variable": [
 		{
-			"key": "username",
+			"key": "application_ID",
 			"value": "YourUsername",
 			"type": "string"
 		},
 		{
-			"key": "password",
+			"key": "application_Secret",
 			"value": "YourPassword",
 			"type": "string"
 		}
