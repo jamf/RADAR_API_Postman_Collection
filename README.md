@@ -30,3 +30,5 @@ This collection utilizes the following variables which should be defined within 
 
 ## Getting Started
 After the collection has been imported and valid values have been defined for the variables, all calls should be supported with minimal input required. Additional data will be required either in the form of a parameter value and/or a request body.
+
+© 2023, JAMF Software, LLC
